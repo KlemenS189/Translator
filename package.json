@@ -1,0 +1,17 @@
+{
+  "name": "transerator",
+  "version": "0.0.1",
+  "description": "Package that automatically generates translation files for your nuxt app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Klemen Strajhar",
+  "license": "MIT",
+  "bin": {
+    "transerator": "index.js"
+  },
+  "dependencies": {
+    "command-line-args": "^5.1.1"
+  }
+}
