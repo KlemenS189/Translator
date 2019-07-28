@@ -7,15 +7,14 @@ class File {
     this.file = ''
     this.fileTrimmed = ''
     this.indices = []
-    // this.translationStrings = []
-    this.translationObjects = {}
+    this.translationStrings = []
 
     // Functions to execute
     this.openFile()
     this.indices = this.findTranslations(this.fileTrimmed)
     this.indices.forEach(idx => {
       const translation = this.pullOutTranslation(idx, this.fileTrimmed)
-      const translationObject = this.createTranslationObject(translation)
+      this.translationStrings.push(translation)
     })
   }
 
@@ -54,19 +53,6 @@ class File {
     const start = index + 3
     const end = str.indexOf('\'', start + 1)
     return str.substring(start + 1, end)
-  }
-
-  createTranslationObject(str) {
-    const splitted = str.split('.')
-    splitted.reverse()
-    const output = splitted.reduce((prev, current, index) => (
-      index === 0 ? {[current]:""} : {[current]:{...prev}}
-    ), "");
-    return output
-  }
-
-  insertToExisiting(newObject, oldObject) {
-    
   }
 
 }

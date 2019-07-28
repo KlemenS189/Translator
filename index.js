@@ -1,21 +1,72 @@
 #!/usr/bin/env node
-const {File} = require("./src/parsing");
 
 const fs = require('fs');
+const set = require('lodash.set');
+const get = require('lodash.get');
+const commandLineUsage = require('command-line-usage')
+const commandLineArgs = require('command-line-args')
+
+const {File} = require("./src/parsing");
 const constants = require('./src/constants.js')
 const {checkCorrectFile} = require("./src/files");
 
+let inputExists = false
+let translationStructure = {}
 
-// region args
-// const optionDefinitions = [
-//   { name: 'folders', type: String, multiple: true, defaultOption: true },
-// ]
-// const commandLineArgs = require('command-line-args')
-// const options = commandLineArgs(optionDefinitions)
-//
-// console.log(options)
+//region Args parsing
+const optionDefinitions = [
+  { name: 'file-input', type: String, defaultOption: true },
+  { name: 'help', alias: 'h', type: Boolean}
+]
+const options = commandLineArgs(optionDefinitions)
+const sections = [
+  {
+    header: 'Description',
+    content: 'Tool for generating translation files with Nuxt i18n module. It scans all your files ' +
+      'for $t() entries and creates an JSON file from them. It will automatically add new entries that aren\'t ' +
+      'in the JSON file yet.'
+  },
+  {
+    header: 'Usage',
+    content: 'transerator fileName'
+  },
+  {
+    header: 'Options',
+    optionList: [
+      {
+        name: 'file-input',
+        typeLabel: '{underline fileName}',
+        description: 'The existing translation file in JSON format, that will be updated with non-existing values'
+      },
+    ]
+  }
+]
+const usage = commandLineUsage(sections)
+//endregion
 
-const translationStructure = {}
+if (options.help === true) {
+  console.log(usage)
+  process.exit(0)
+}
+if (options['file-input']) {
+  let inputFile
+  const fileOptions = {
+    encoding: 'utf-8'
+  }
+  try {
+    inputFile = fs.readFileSync(options['file-input'], fileOptions)
+    inputExists = true
+  } catch (e) {
+    console.warn('File does not exist or cannot be opened.')
+    process.exit(-1)
+  }
+  try {
+    translationStructure = JSON.parse(inputFile)
+  } catch (e) {
+    console.log('Cannot convert string to JSON')
+    process.exit(-2)
+  }
+}
 
 const folders = ['pages', 'components']
 
@@ -27,12 +78,13 @@ const traverseThroughDirectory = (path) => {
     if (fileStats.isDirectory()) {
       traverseThroughDirectory(relativePath)
     }
-    if (fileStats.isFile()) {
-      const isCorrectFile = checkCorrectFile(relativePath)
-      if (isCorrectFile) {
-        console.log('\tScanning file ' + relativePath)
-        file = new File(relativePath)
-      }
+    if (fileStats.isFile() && checkCorrectFile(relativePath)) {
+      console.log('\tScanning file ' + relativePath)
+      file = new File(relativePath)
+      file.translationStrings.forEach(str => {
+        const value = get(translationStructure, str)
+        value === undefined ? set(translationStructure, str, "") : null
+      })
     }
   })
 }
@@ -51,5 +103,16 @@ folders.forEach(folder => {
     console.warn('Directory ' + path + ' does not exist. Skipping')
   }
 })
+
+const stringifiedContent = JSON.stringify(translationStructure)
+fs.writeFile("translations.json", stringifiedContent, function(err) {
+  if(err) {
+    return console.log(err);
+  }
+  if (options['file-input'])
+    console.log('Created a new file translations.json with the updated contents of ' + options['file-input'])
+  else
+    console.log("The translations were saved in file translations.json");
+});
 
 

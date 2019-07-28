@@ -4,18 +4,18 @@
   "description": "Package that automatically generates translation files for your nuxt app.",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text mocha",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "babel src/ -d lib/",
-    "prepublish": "npm run build"
+    "test": "nyc --reporter=html --reporter=text mocha"
   },
   "author": "Klemen Strajhar",
   "license": "MIT",
   "bin": {
-    "transerator": "index.js"
+    "translator": "index.js"
   },
   "dependencies": {
-    "command-line-args": "^5.1.1"
+    "command-line-args": "^5.1.1",
+    "command-line-usage": "^6.0.2",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
