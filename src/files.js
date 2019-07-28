@@ -1,9 +1,8 @@
 const constants = require('./constants.js')
 
-checkCorrectFile = (fileName) => {
+const checkCorrectFile = (fileName) => {
   return constants.mainFileExtensions.test(fileName)
 }
-
 
 module.exports = {
   checkCorrectFile: checkCorrectFile

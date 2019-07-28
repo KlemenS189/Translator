@@ -1,22 +1,20 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const set = require('lodash.set');
-const get = require('lodash.get');
+const fs = require('fs')
+const set = require('lodash.set')
+const get = require('lodash.get')
 const commandLineUsage = require('command-line-usage')
 const commandLineArgs = require('command-line-args')
 
-const {File} = require("./src/parsing");
-const constants = require('./src/constants.js')
-const {checkCorrectFile} = require("./src/files");
+const { File } = require('./src/parsing')
+const { checkCorrectFile } = require('./src/files')
 
-let inputExists = false
 let translationStructure = {}
 
-//region Args parsing
+// region Args parsing
 const optionDefinitions = [
   { name: 'file-input', type: String, defaultOption: true },
-  { name: 'help', alias: 'h', type: Boolean}
+  { name: 'help', alias: 'h', type: Boolean }
 ]
 const options = commandLineArgs(optionDefinitions)
 const sections = [
@@ -37,12 +35,12 @@ const sections = [
         name: 'file-input',
         typeLabel: '{underline fileName}',
         description: 'The existing translation file in JSON format, that will be updated with non-existing values'
-      },
+      }
     ]
   }
 ]
 const usage = commandLineUsage(sections)
-//endregion
+// endregion
 
 if (options.help === true) {
   console.log(usage)
@@ -55,7 +53,6 @@ if (options['file-input']) {
   }
   try {
     inputFile = fs.readFileSync(options['file-input'], fileOptions)
-    inputExists = true
   } catch (e) {
     console.warn('File does not exist or cannot be opened.')
     process.exit(-1)
@@ -82,8 +79,9 @@ const traverseThroughDirectory = (path) => {
       console.log('\tScanning file ' + relativePath)
       file = new File(relativePath)
       file.translationStrings.forEach(str => {
-        const value = get(translationStructure, str)
-        value === undefined ? set(translationStructure, str, "") : null
+        if (get(translationStructure, str) === undefined) {
+          set(translationStructure, str, '')
+        }
       })
     }
   })
@@ -98,21 +96,15 @@ folders.forEach(folder => {
   if (fs.existsSync(path)) {
     console.log('Scanning directory ' + path)
     traverseThroughDirectory(path)
-  }
-  else {
+  } else {
     console.warn('Directory ' + path + ' does not exist. Skipping')
   }
 })
 
 const stringifiedContent = JSON.stringify(translationStructure)
-fs.writeFile("translations.json", stringifiedContent, function(err) {
-  if(err) {
-    return console.log(err);
+fs.writeFile('translations.json', stringifiedContent, function (err) {
+  if (err) {
+    return console.log(err)
   }
-  if (options['file-input'])
-    console.log('Created a new file translations.json with the updated contents of ' + options['file-input'])
-  else
-    console.log("The translations were saved in file translations.json");
-});
-
-
+  if (options['file-input']) { console.log('Created a new file translations.json with the updated contents of ' + options['file-input']) } else { console.log('The translations were saved in file translations.json') }
+})
