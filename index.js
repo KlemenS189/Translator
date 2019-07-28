@@ -1,6 +1,9 @@
 #!/usr/bin/env node
+const {File} = require("./src/parsing");
+
 const fs = require('fs');
-const constants = require('./constants.js')
+const constants = require('./src/constants.js')
+const {checkCorrectFile} = require("./src/files");
 
 
 // region args
@@ -16,18 +19,20 @@ const translationStructure = {}
 
 const folders = ['pages', 'components']
 
-const checkCorrectFile = () => {}
-
 const traverseThroughDirectory = (path) => {
   const filesInRoot = fs.readdirSync(path)
   filesInRoot.forEach(file => {
-    const fileStats = fs.lstatSync(path + '/' + file)
-    console.log(fileStats.isDirectory(), file)
-
+    const relativePath = path + '/' + file
+    const fileStats = fs.lstatSync(relativePath)
     if (fileStats.isDirectory()) {
-      traverseThroughDirectory(path + '/' + file)
-    } else if (fileStats.isDirectory()) {
-
+      traverseThroughDirectory(relativePath)
+    }
+    if (fileStats.isFile()) {
+      const isCorrectFile = checkCorrectFile(relativePath)
+      if (isCorrectFile) {
+        console.log('\tScanning file ' + relativePath)
+        file = new File(relativePath)
+      }
     }
   })
 }
@@ -35,10 +40,16 @@ const traverseThroughDirectory = (path) => {
 // Read through the directory contents
 // Check if file is a folder or a file
 // If file, check if it matches the pattern else go a level deeper.
+
 folders.forEach(folder => {
   const path = './' + folder
-  if (fs.existsSync(path))
+  if (fs.existsSync(path)) {
+    console.log('Scanning directory ' + path)
     traverseThroughDirectory(path)
+  }
+  else {
+    console.warn('Directory ' + path + ' does not exist. Skipping')
+  }
 })
 
 
