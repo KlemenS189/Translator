@@ -1,6 +1,4 @@
 const assert = require('assert');
-const fs = require('fs');
-
 const {File} = require("../src/parsing");
 
 describe('Checking file parsing', function () {
@@ -19,5 +17,26 @@ describe('Checking file parsing', function () {
   it('Should extract translation from string based on start index', function () {
     const file = new File('./test/pages/indexMultiple.vue')
     assert.strictEqual(file.pullOutTranslation(0, file.fileTrimmed), 'test1.test1')
+  })
+
+  it('Should create object from single translation string', function () {
+    const file = new File('./test/pages/indexMultiple.vue')
+    assert.deepStrictEqual(file.createTranslationObject('test'), {test: ""})
+  })
+
+  it('Should create object from nested translation string', function () {
+    const file = new File('./test/pages/indexMultiple.vue')
+    assert.deepStrictEqual(file.createTranslationObject('test.test'), {
+      test: {
+        test: ""
+      }
+    })
+    assert.deepStrictEqual(file.createTranslationObject('test.test.test'), {
+      test: {
+        test: {
+          test: ""
+        }
+      }
+    })
   })
 });
