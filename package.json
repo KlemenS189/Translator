@@ -1,6 +1,6 @@
 {
   "name": "@razmooo/translator",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Package that automatically generates translation files for your nuxt app.",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,13 @@
     "type": "git",
     "url": "https://github.com/KlemenS189/Translator.git"
   },
-  "keywords": ["Javascript", "Nuxt.js", "i18n", "Translations", "Node"],
+  "keywords": [
+    "Javascript",
+    "Nuxt.js",
+    "i18n",
+    "Translations",
+    "Node"
+  ],
   "bugs": {
     "url": "https://github.com/KlemenS189/Translator.git/issues"
   },
