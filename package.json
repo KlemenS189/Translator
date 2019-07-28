@@ -1,5 +1,5 @@
 {
-  "name": "translator",
+  "name": "@razmooo/translator",
   "version": "0.0.1",
   "description": "Package that automatically generates translation files for your nuxt app.",
   "main": "index.js",
@@ -10,6 +10,9 @@
   "license": "MIT",
   "bin": {
     "translator": "index.js"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "command-line-args": "^5.1.1",
