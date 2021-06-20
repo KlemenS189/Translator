@@ -1,6 +1,9 @@
 # Translator
 
-Translator is a tool for generating translation files for [Nuxt.js i18n](https://github.com/nuxt-community/nuxt-i18n) package. It will scan all **.vue** and **.js** files in **/pages** and **/components** directories.
+Translator is a tool for generating translation files for [Nuxt.js i18n](https://github.com/nuxt-community/nuxt-i18n) package. 
+It will scan all **.vue** and **.js** files in **/pages** and **/components** directories for `$t('<insert translate tag here>')`. 
+If the tag does not exist, it will be created in translation's JSON file with an empty (`""`) value.
+
 
 # Features!
 
