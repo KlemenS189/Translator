@@ -1,6 +1,6 @@
 {
   "name": "@razmooo/translator",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Package that automatically generates translation files for your nuxt app.",
   "main": "index.js",
   "scripts": {
