@@ -102,9 +102,14 @@ folders.forEach(folder => {
 })
 
 const stringifiedContent = JSON.stringify(translationStructure)
-fs.writeFile('translations.json', stringifiedContent, function (err) {
+
+let outputFile = 'translations.json'
+if (options['file-output']) {
+  outputFile = options['file-output']
+}
+fs.writeFile(outputFile, stringifiedContent, function (err) {
   if (err) {
-    return console.log('There was an error with writing to file translations.json')
+    return console.log(`There was an error with writing to file ${outputFile}`)
   }
-  if (options['file-output']) { console.log('Created a new file translations.json with the updated contents of ' + options['file-output']) } else { console.log('The translations were saved in file translations.json') }
+  if (options['file-output']) { console.log('Created a new file with the updated contents of ' + options['file-output']) } else { console.log('The translations were saved in file translations.json') }
 })

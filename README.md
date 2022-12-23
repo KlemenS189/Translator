@@ -21,7 +21,7 @@ If the tag does not exist, it will be created in translation's JSON file with an
 Install with npm or yarn
 ```sh
 npm install @razmooo/translator --save-dev
-yarn add @razmooo/translator --dev .
+yarn add @razmooo/translator --dev
 ```
 
 # How to use
@@ -31,12 +31,14 @@ translator
 ```
 If you want to update non-existing values in a existing translation file:
 ```sh
-translator path/to/file
+yarn translator --file-output path/to/file
 ```
 
 # Example
-If you have a json files with translations in `lang` folder, you can specify the json file , which will be updated.
+If you have a json files with translations in `lang` folder, you can specify the json file, which will be updated.
 ```sh
-translator lang/en-US.json
+yarn translator --file-output lang/en-US.json
 ```
 
+# Help
+Type ``yarn translator --help`` for help output.
