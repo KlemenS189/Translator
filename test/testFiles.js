@@ -1,4 +1,4 @@
-var assert = require('assert')
+const assert = require('assert')
 const { checkCorrectFile } = require('../src/files')
 describe('Checking file extensions', function () {
   it('Should return true if extension is .vue', function () {

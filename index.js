@@ -13,7 +13,7 @@ let translationStructure = {}
 
 // region Args parsing
 const optionDefinitions = [
-  { name: 'file-input', type: String, defaultOption: true },
+  { name: 'file-output', type: String, defaultOption: true },
   { name: 'help', alias: 'h', type: Boolean }
 ]
 const options = commandLineArgs(optionDefinitions)
@@ -26,13 +26,13 @@ const sections = [
   },
   {
     header: 'Usage',
-    content: 'transerator fileName'
+    content: 'translator fileName'
   },
   {
     header: 'Options',
     optionList: [
       {
-        name: 'file-input',
+        name: 'file-output',
         typeLabel: '{underline fileName}',
         description: 'The existing translation file in JSON format, that will be updated with non-existing values'
       }
@@ -46,13 +46,13 @@ if (options.help === true) {
   console.log(usage)
   process.exit(0)
 }
-if (options['file-input']) {
+if (options['file-output']) {
   let inputFile
   const fileOptions = {
     encoding: 'utf-8'
   }
   try {
-    inputFile = fs.readFileSync(options['file-input'], fileOptions)
+    inputFile = fs.readFileSync(options['file-output'], fileOptions)
   } catch (e) {
     console.warn('File does not exist or cannot be opened.')
     process.exit(-1)
@@ -65,7 +65,7 @@ if (options['file-input']) {
   }
 }
 
-const folders = ['pages', 'components']
+const folders = ['pages', 'components', 'layouts']
 
 const traverseThroughDirectory = (path) => {
   const filesInRoot = fs.readdirSync(path)
@@ -106,5 +106,5 @@ fs.writeFile('translations.json', stringifiedContent, function (err) {
   if (err) {
     return console.log('There was an error with writing to file translations.json')
   }
-  if (options['file-input']) { console.log('Created a new file translations.json with the updated contents of ' + options['file-input']) } else { console.log('The translations were saved in file translations.json') }
+  if (options['file-output']) { console.log('Created a new file translations.json with the updated contents of ' + options['file-output']) } else { console.log('The translations were saved in file translations.json') }
 })

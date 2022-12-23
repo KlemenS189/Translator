@@ -16,6 +16,7 @@ class File {
       const translation = this.pullOutTranslation(idx, this.fileTrimmed)
       this.translationStrings.push(translation)
     })
+    console.log(this.translationStrings)
   }
 
   /**

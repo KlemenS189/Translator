@@ -1,6 +1,6 @@
 
 module.exports = {
   invisibleFilesRegex: /\..+/g,
-  mainFileExtensions: /\.vue$|\.js$/,
+  mainFileExtensions: /\.vue$|\.js$|\.ts$/,
   nodeModulesFile: 'node_modules'
 }
